@@ -30,7 +30,7 @@
 		}
 	}
 
-	let mass_2_y = 30; // meters
+	let mass_2_y = 25; // meters
 	let mass_2: null | HTMLDivElement = null;
 	let mass_2_string: null | HTMLDivElement = null;
 	let mass_2_mass = 5; // kg
@@ -59,7 +59,7 @@
 	function animation() {
 		if (mass_2_y >= 0 && mass_1_y >= 0 && start) {
 			let t = (Date.now() - start) / 1000;
-			mass_2_y = 0.5 * -accel * Math.pow(t, 2) + 30;
+			mass_2_y = 0.5 * -accel * Math.pow(t, 2) + 25;
 			mass_1_y = 0.5 * accel * Math.pow(t, 2);
 
 			if (!triggered && mass_1_y >= 20) {
@@ -120,7 +120,7 @@
 			on:click={() => {
 				start = Date.now();
 				mass_1_y = 0;
-				mass_2_y = 30;
+				mass_2_y = 25;
 				triggered = false;
 				running = true;
 				requestAnimationFrame(animation);

@@ -17,8 +17,12 @@
 	let items: number[] = [];
 
 	$: {
+		let calc = null;
 		try {
-			let calc = evaluatex(expr, {});
+			calc = evaluatex(expr, {});
+		} catch (e) {}
+
+		if (calc) {
 			for (let i = 0; i < table.values[table.keys[0]].length; i++) {
 				let vars: { [key: string]: number } = {};
 
@@ -26,19 +30,24 @@
 					vars[key] = parseFloat(table.values[key][i]);
 				});
 
+				let res = null;
 				try {
-					if (items.length > i) {
-						items[i] = calc(vars);
-					} else {
-						items.push(calc(vars));
-					}
-				} catch (e) {
-					console.log(e);
+					res = calc(vars);
+				} catch (e) {}
+
+				if (!res) {
+					continue;
+				}
+
+				if (items.length > i) {
+					items[i] = res;
+				} else {
+					items.push(res);
 				}
 			}
-		} catch (e) {
-			console.log(e);
 		}
+
+		items = items;
 	}
 
 	$: {
