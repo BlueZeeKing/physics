@@ -87,7 +87,7 @@
 			<div class="w-32 h-32 rounded-full border-2 border-gray-900 bg-cyan-200 col-span-2 mx-auto" />
 			<div
 				bind:this={mass_1}
-				class="bg-gray-200 border-2 border-gray-900 text-center align-middle grid place-content-center bg-amber-200 mx-auto relative"
+				class="bg-gray-200 border-2 border-gray-900 text-center align-middle grid place-content-center bg-amber-200 mx-auto relative scale-150"
 			>
 				<div
 					bind:this={mass_1_string}
@@ -114,19 +114,19 @@
 		</div>
 		<div class="flex-grow" />
 	</div>
-	<button
-		on:click={() => {
-			start = Date.now();
-			mass_1_y = 0;
-			mass_2_y = 30;
-			triggered = false;
-			running = true;
-			requestAnimationFrame(animation);
-		}}>Run</button
-	>
-	<br />
-	<input type="range" bind:value={mass_1_mass} max={50} min={10} disabled={running} />
-	{#if display_time}
-		<p>Time: {display_time.toFixed(3)}</p>
-	{/if}
+	<div class="bottom-0 absolute flex p-2 gap-2">
+		<button
+			class="bg-blue-500 rounded px-6 p-2 text-white shadow hover:bg-blue-400 active:scale-95 active:shadow-sm transition duration-100 text-md"
+			on:click={() => {
+				start = Date.now();
+				mass_1_y = 0;
+				mass_2_y = 30;
+				triggered = false;
+				running = true;
+				requestAnimationFrame(animation);
+			}}>Run</button
+		>
+		<label class="m-auto" for="mass">Mass: {mass_1_mass} kg</label>
+		<input type="range" id="mass" bind:value={mass_1_mass} max={50} min={10} disabled={running} />
+	</div>
 </div>
