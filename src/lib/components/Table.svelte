@@ -7,8 +7,13 @@
 <div class="grid border border-l-0 border-b-0 border-gray-700 grid-flow-col">
 	{#each $given.keys as name}
 		<div class="border-l border-gray-700">
-			<div class="text-center border-b border-gray-700 px-2 h-10 grid place-content-center">
-				<LatexDisplay>{name}</LatexDisplay>
+			<div
+				class="border-b border-gray-700 px-2 h-10 grid justify-center grid-cols-2 content-center gap-1"
+			>
+				<span class="text-right">
+					<LatexDisplay>{name}</LatexDisplay>
+				</span>
+				({$given.units[name]})
 			</div>
 
 			{#each $given.values[name] as value}

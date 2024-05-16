@@ -5,9 +5,14 @@ export interface TableValues {
 	values: { [key: string]: string[] };
 }
 
-export const given = writable<TableValues>({
+export interface UnitTableValues extends TableValues {
+	units: { [key: string]: string };
+}
+
+export const given = writable<UnitTableValues>({
 	keys: ['m_1', 'm_2', 'd', 't'],
-	values: { m_1: [], m_2: [], d: [], t: [] }
+	values: { m_1: [], m_2: [], d: [], t: [] },
+	units: { m_1: 'kg', m_2: 'kg', d: 'm', t: 's' }
 });
 
 export const derived = writable<TableValues>({

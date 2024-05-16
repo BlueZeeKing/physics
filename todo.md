@@ -1,4 +1,4 @@
 - [ ] Feedback on linear regression line
 - [ ] Create more derived variables
-- [ ] Add units to given variables
+- [x] Add units to given variables
 - [x] Fix weird update bug where table doesn't update when latex input updates
