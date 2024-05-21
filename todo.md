@@ -1,4 +1,8 @@
-- [ ] Feedback on linear regression line
+- [x] Feedback on linear regression line
 - [ ] Create more derived variables
 - [x] Add units to given variables
 - [x] Fix weird update bug where table doesn't update when latex input updates
+- [ ] Clear data
+- [ ] Save data
+- [x] Final question, ask what is "g"
+- [ ] Guide

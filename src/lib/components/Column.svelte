@@ -60,7 +60,7 @@
 </script>
 
 <div class="border-l border-gray-700">
-	<div class="border-b border-gray-700 flex px-2 gap-1 h-10">
+	<div class="border-b border-gray-700 flex px-2 gap-1 h-14">
 		<div class="grid place-content-center">
 			<LatexDisplay>{name}=</LatexDisplay>
 		</div>

@@ -2,17 +2,15 @@
 	import { onMount } from 'svelte';
 	import Table from '$lib/components/Table.svelte';
 	import Diagram from '$lib/components/Diagram.svelte';
-	import LatexInput from '$lib/components/LatexInput.svelte';
 	import { derived, given } from '$lib/store';
+	import LatexDisplay from '$lib/components/LatexDisplay.svelte';
 
 	let elt: HTMLElement;
 	let slope = 0;
 	let y_intercept = 0;
+	let true_slope = 0;
 
-	let m1 = '';
-	let m2 = '';
-	let d = '';
-	let t = '';
+	let answer: null | string = null;
 
 	let calculator: Desmos.Calculator;
 
@@ -23,11 +21,11 @@
 				id: 'data',
 				columns: [
 					{
-						latex: 'x',
+						latex: 'x_l',
 						values: table.values.x
 					},
 					{
-						latex: 'y',
+						latex: 'y_l',
 						values: table.values.y
 					}
 				]
@@ -45,11 +43,11 @@
 			id: 'data',
 			columns: [
 				{
-					latex: 'x',
+					latex: 'x_l',
 					values: []
 				},
 				{
-					latex: 'y',
+					latex: 'y_l',
 					values: []
 				}
 			]
@@ -87,6 +85,12 @@
 			color: Desmos.Colors.BLACK
 		});
 
+		calculator.setExpression({
+			type: 'expression',
+			latex: 'y_l ~ mx_l + b',
+			hidden: true
+		});
+
 		let slope_expr = calculator.HelperExpression({ latex: '(y_1 - y_2) / (x_1 - x_2)' });
 		slope_expr.observe('numericValue', function () {
 			slope = slope_expr.numericValue;
@@ -98,7 +102,14 @@
 		intercept_expr.observe('numericValue', function () {
 			y_intercept = intercept_expr.numericValue;
 		});
+
+		let real_expr = calculator.HelperExpression({ latex: 'm' });
+		real_expr.observe('numericValue', function () {
+			true_slope = real_expr.numericValue;
+		});
 	});
+
+	$: percent_error = Math.abs((slope - true_slope) / true_slope);
 </script>
 
 <div class="grid grid-cols-2 h-screen">
@@ -107,9 +118,28 @@
 	</div>
 	<div class="flex flex-col">
 		<div class="h-[50vh]" bind:this={elt} />
-		<p>y = {slope.toFixed(3)}x + {y_intercept.toFixed(3)}</p>
-		<div class="flex-grow w-full">
+		<p
+			class="transition duration-200"
+			class:text-green-600={percent_error < 0.05}
+			class:text-amber-600={percent_error >= 0.05 && percent_error <= 0.25}
+			class:text-red-600={percent_error > 0.25}
+		>
+			y = {slope.toFixed(3)}x + {y_intercept.toFixed(3)}
+		</p>
+		<div class="w-full">
 			<Table />
+		</div>
+		<div class="p-2 flex flex-row">
+			<label for="final-submission">What is <LatexDisplay>g</LatexDisplay>?</label><input
+				id="final-submission"
+				class="border border-gray-600 mx-1 w-16"
+				bind:value={answer}
+			/>
+			{#if answer && Number.parseFloat(answer).toFixed(3) == slope.toFixed(3) && percent_error < 0.05}
+				<p>✅</p>
+			{:else if answer}
+				<p>❌</p>
+			{/if}
 		</div>
 	</div>
 </div>

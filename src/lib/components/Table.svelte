@@ -8,7 +8,7 @@
 	{#each $given.keys as name}
 		<div class="border-l border-gray-700">
 			<div
-				class="border-b border-gray-700 px-2 h-10 grid justify-center grid-cols-2 content-center gap-1"
+				class="border-b border-gray-700 px-2 h-14 grid justify-center grid-cols-2 content-center gap-1"
 			>
 				<span class="text-right">
 					<LatexDisplay>{name}</LatexDisplay>

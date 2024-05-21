@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { given } from '$lib/store';
+	import LatexDisplay from './LatexDisplay.svelte';
 
 	// Standard Normal variate using Box-Muller transform.
 	// from https://stackoverflow.com/a/36481059/24132157
@@ -53,7 +54,6 @@
 
 	let start: null | number = null;
 	let triggered = false;
-	let display_time: null | number = null;
 	let running = false;
 
 	function animation() {
@@ -64,7 +64,6 @@
 
 			if (!triggered && mass_1_y >= 20) {
 				triggered = true;
-				display_time = t * gaussianRandom(1, 0.01);
 			}
 			requestAnimationFrame(animation);
 		} else {
@@ -73,14 +72,19 @@
 				vals.values['m_1'].push(mass_1_mass.toFixed(3));
 				vals.values['m_2'].push(mass_2_mass.toFixed(3));
 				vals.values['d'].push('20.000');
-				vals.values['t'].push((display_time ?? NaN).toFixed(3));
+				vals.values['t'].push((Math.sqrt((2 * 20) / accel) * gaussianRandom(1, 0.01)).toFixed(3));
 				return vals;
 			});
 		}
 	}
 </script>
 
-<div>
+<div class="relative">
+	<fieldset class="absolute p-2 border border-gray-900 px-5 m-4 right-0 top-0">
+		<legend>Constants</legend>
+		<div><LatexDisplay>m_2</LatexDisplay>= 5kg</div>
+		<div><LatexDisplay>d</LatexDisplay>= 20m</div>
+	</fieldset>
 	<div class="flex pt-10">
 		<div class="flex-grow" />
 		<div class="grid grid-cols-2 w-64 relative">
@@ -114,19 +118,20 @@
 		</div>
 		<div class="flex-grow" />
 	</div>
-	<div class="bottom-0 absolute flex p-2 gap-2">
-		<button
-			class="bg-blue-500 rounded px-6 p-2 text-white shadow hover:bg-blue-400 active:scale-95 active:shadow-sm transition duration-100 text-md"
-			on:click={() => {
-				start = Date.now();
-				mass_1_y = 0;
-				mass_2_y = 25;
-				triggered = false;
-				running = true;
-				requestAnimationFrame(animation);
-			}}>Run</button
-		>
-		<label class="m-auto" for="mass">Mass: {mass_1_mass} kg</label>
-		<input type="range" id="mass" bind:value={mass_1_mass} max={50} min={10} disabled={running} />
-	</div>
+</div>
+<div class="bottom-0 absolute flex p-2 gap-2">
+	<button
+		class="bg-blue-500 disabled:bg-gray-500 disabled:cursor-not-allowed rounded px-6 p-2 text-white shadow enabled:hover:bg-blue-400 enabled:active:scale-95 enabled:active:shadow-sm transition duration-100 text-md"
+		disabled={running}
+		on:click={() => {
+			start = Date.now();
+			mass_1_y = 0;
+			mass_2_y = 25;
+			triggered = false;
+			running = true;
+			requestAnimationFrame(animation);
+		}}>Run</button
+	>
+	<label class="m-auto" for="mass">Mass: {mass_1_mass} kg</label>
+	<input type="range" id="mass" bind:value={mass_1_mass} max={50} min={10} disabled={running} />
 </div>
