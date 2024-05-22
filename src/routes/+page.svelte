@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import Table from '$lib/components/Table.svelte';
 	import Diagram from '$lib/components/Diagram.svelte';
-	import { derived, given } from '$lib/store';
+	import { derived, reset, startLocal } from '$lib/store';
 	import LatexDisplay from '$lib/components/LatexDisplay.svelte';
 
 	let elt: HTMLElement;
@@ -34,6 +34,7 @@
 	});
 
 	onMount(() => {
+		startLocal();
 		calculator = Desmos.GraphingCalculator(elt, {
 			expressions: false
 		});
@@ -87,7 +88,7 @@
 
 		calculator.setExpression({
 			type: 'expression',
-			latex: 'y_l ~ mx_l + b',
+			latex: 'y_l ~ mx_l',
 			hidden: true
 		});
 
@@ -140,6 +141,13 @@
 			{:else if answer}
 				<p>❌</p>
 			{/if}
+			<div class="flex-grow" />
+			<button
+				class="bg-blue-500 disabled:bg-gray-500 disabled:cursor-not-allowed rounded px-6 p-2 text-white shadow enabled:hover:bg-blue-400 enabled:active:scale-95 enabled:active:shadow-sm transition duration-100 text-md"
+				on:click={() => {
+					reset();
+				}}>Clear</button
+			>
 		</div>
 	</div>
 </div>

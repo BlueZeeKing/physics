@@ -23,6 +23,7 @@
 		} catch (e) {}
 
 		if (calc) {
+			items = [];
 			for (let i = 0; i < table.values[table.keys[0]].length; i++) {
 				let vars: { [key: string]: number } = {};
 
@@ -39,11 +40,7 @@
 					continue;
 				}
 
-				if (items.length > i) {
-					items[i] = res;
-				} else {
-					items.push(res);
-				}
+				items.push(res);
 			}
 		}
 
@@ -65,11 +62,7 @@
 			<LatexDisplay>{name}=</LatexDisplay>
 		</div>
 		<div class="grid place-content-center">
-			<LatexInput
-				onChange={(latex) => {
-					expr = latex;
-				}}
-			/>
+			<LatexInput bind:latex={expr} id={name} />
 		</div>
 	</div>
 
