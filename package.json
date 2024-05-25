@@ -15,6 +15,7 @@
 		"@sveltejs/adapter-auto": "^2.0.0",
 		"@sveltejs/adapter-static": "2.0.0",
 		"@sveltejs/kit": "^1.27.4",
+		"@tailwindcss/typography": "^0.5.13",
 		"@types/desmos": "^1.6.3",
 		"@types/evaluatex": "^2.2.8",
 		"@typescript-eslint/eslint-plugin": "^6.0.0",

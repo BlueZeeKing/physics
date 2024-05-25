@@ -4,6 +4,7 @@
 	import Diagram from '$lib/components/Diagram.svelte';
 	import { derived, reset, startLocal } from '$lib/store';
 	import LatexDisplay from '$lib/components/LatexDisplay.svelte';
+	import InputHelp from '$lib/components/InputHelp.svelte';
 
 	let elt: HTMLElement;
 	let slope = 0;
@@ -13,6 +14,8 @@
 	let answer: null | string = null;
 
 	let calculator: Desmos.Calculator;
+
+	let help_open = false;
 
 	derived.subscribe((table) => {
 		if (calculator) {
@@ -113,20 +116,28 @@
 	$: percent_error = Math.abs((slope - true_slope) / true_slope);
 </script>
 
+<InputHelp bind:open={help_open} />
 <div class="grid grid-cols-2 h-screen">
 	<div>
 		<Diagram />
 	</div>
 	<div class="flex flex-col">
 		<div class="h-[50vh]" bind:this={elt} />
-		<p
-			class="transition duration-200"
-			class:text-green-600={percent_error < 0.05}
-			class:text-amber-600={percent_error >= 0.05 && percent_error <= 0.25}
-			class:text-red-600={percent_error > 0.25}
-		>
-			y = {slope.toFixed(3)}x + {y_intercept.toFixed(3)}
-		</p>
+		<div class="flex flex-row">
+			<p
+				class="transition duration-200"
+				class:text-green-600={percent_error < 0.05}
+				class:text-amber-600={percent_error >= 0.05 && percent_error <= 0.25}
+				class:text-red-600={percent_error > 0.25}
+			>
+				y = {slope.toFixed(3)}x + {y_intercept.toFixed(3)}
+			</p>
+			<div class="flex-grow" />
+			<button
+				class="bg-blue-500 disabled:bg-gray-500 disabled:cursor-not-allowed rounded px-6 p-2 text-white shadow enabled:hover:bg-blue-400 enabled:active:scale-95 enabled:active:shadow-sm transition duration-100 text-md m-1"
+				on:click={() => (help_open = true)}>Input Help</button
+			>
+		</div>
 		<div class="w-full">
 			<Table />
 		</div>
