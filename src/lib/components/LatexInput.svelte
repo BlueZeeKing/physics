@@ -27,7 +27,9 @@
 					// @ts-ignore
 					latex = field.latex();
 				}
-			}
+			},
+			autoCommands: 'pi theta sqrt',
+			autoOperatorNames: 'sin cos abs'
 		});
 
 		let prev_val = window.localStorage.getItem(`latex-${id}`);
@@ -42,7 +44,8 @@
 	});
 
 	$: {
-		if (field) {
+		// @ts-ignore
+		if (field && field.latex() != latex) {
 			// @ts-ignore
 			field.latex(latex);
 		}
