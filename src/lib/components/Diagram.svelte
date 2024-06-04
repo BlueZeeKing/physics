@@ -1,4 +1,6 @@
 <script lang="ts">
+	const pulley_mass = 5; // kg
+
 	import { given } from '$lib/store';
 	import LatexDisplay from './LatexDisplay.svelte';
 
@@ -50,7 +52,9 @@
 		}
 	}
 
-	$: accel = (mass_1_mass * 9.8 - mass_2_mass * 9.8) / (mass_1_mass + mass_2_mass);
+	$: accel =
+		((9.8 * (mass_1_mass - mass_2_mass)) / (mass_1_mass + mass_2_mass + pulley_mass / 2)) *
+		gaussianRandom(1, 0.01); // TODO: Add torque and friction
 
 	let start: null | number = null;
 	let triggered = false;
@@ -72,7 +76,7 @@
 				vals.values['m_1'].push(mass_1_mass.toFixed(3));
 				vals.values['m_2'].push(mass_2_mass.toFixed(3));
 				vals.values['d'].push('20.000');
-				vals.values['t'].push((Math.sqrt((2 * 20) / accel) * gaussianRandom(1, 0.01)).toFixed(3));
+				vals.values['t'].push(Math.sqrt((2 * 20) / accel).toFixed(3));
 				return vals;
 			});
 		}

@@ -91,7 +91,7 @@
 
 		calculator.setExpression({
 			type: 'expression',
-			latex: 'y_l ~ mx_l',
+			latex: 'y_l ~ mx_l + b',
 			hidden: true
 		});
 
